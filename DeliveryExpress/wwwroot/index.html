@@ -33,6 +33,8 @@
             layers.map.addTo(map);
             L.control.layers(layers).addTo(map);
 
+            L.control.scale({ imperial: false, position: "bottomleft" }).addTo(map);
+
             map.setView([-41.2889, 174.7772], 12);
         };
     </script>

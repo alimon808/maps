@@ -23,7 +23,15 @@
     <script>
         window.onload = function () {
             L.mapbox.accessToken = 'pk.eyJ1IjoiYWxpbW9uIiwiYSI6ImNpcDdzeWF3cjAxNmxzeG5yeHRteTAxZXgifQ.7MJPz9HOpjitcYyKHk7GgQ';
-            window.map = L.mapbox.map('map', 'mapbox.streets');
+            window.map = L.mapbox.map('map', null);
+
+            var layers = {
+                map: L.mapbox.tileLayer('mapbox.streets'),
+                terrain: L.mapbox.tileLayer('mapbox.satellite')
+            };
+
+            layers.map.addTo(map);
+            L.control.layers(layers).addTo(map);
 
             map.setView([-41.2889, 174.7772], 12);
         };

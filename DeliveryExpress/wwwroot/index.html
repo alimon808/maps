@@ -21,9 +21,10 @@
     </style>
 
     <script>
-        window.onload = function () {
+
+        function setupMap() {
             L.mapbox.accessToken = 'pk.eyJ1IjoiYWxpbW9uIiwiYSI6ImNpcDdzeWF3cjAxNmxzeG5yeHRteTAxZXgifQ.7MJPz9HOpjitcYyKHk7GgQ';
-            window.map = L.mapbox.map('map', null);
+            window.map = L.mapbox.map('map', null, { minZoom: 11 });
 
             var layers = {
                 map: L.mapbox.tileLayer('mapbox.streets'),
@@ -37,6 +38,10 @@
             map.addControl(L.mapbox.infoControl({ position: "bottomleft" }));
             map.removeControl(map.attributionControl);
             map.setView([-41.2889, 174.7772], 12);
+        }
+
+        window.onload = function () {
+            setupMap();
         };
     </script>
 </head>

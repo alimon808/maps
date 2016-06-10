@@ -9,5 +9,12 @@
   - scale control
   - attribution and info controls
 - Displaying data
+  - [coordinates info] (astro.unl.edu/classaction/animations/coordsmotion/longlat.html)
+  - markers and custom icons
+  - geolocation and position updates
+  - polylines
+  - polygons
+  - kml format
 - Adding interactivity
 - Going further
+

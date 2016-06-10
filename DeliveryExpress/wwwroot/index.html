@@ -5,7 +5,6 @@
     <title>Delivery Express</title>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
-
     <style>
         body {
             margin: 0;
@@ -19,7 +18,7 @@
             width: 100%;
         }
     </style>
-
+    <script src="js/markers.js"></script>
     <script>
 
         function setupMap() {
@@ -42,6 +41,9 @@
 
         window.onload = function () {
             setupMap();
+
+            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description });
+            marker.addTo(map);
         };
     </script>
 </head>

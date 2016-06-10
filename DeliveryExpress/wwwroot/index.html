@@ -42,37 +42,22 @@
         window.onload = function () {
             setupMap();
 
-            var icons = {
-                "Truck": L.icon({
-                    iconUrl: "img/truck.png",
-                    iconSize: [30, 15],
-                    className: "icon"
-                }),
-                "Van": L.icon({
-                    iconUrl: "img/van.png",
-                    iconSize: [30, 15],
-                    className: "icon"
-                }),
-                "Scooter": L.icon({
-                    iconUrl: "img/scooter.png",
-                    iconSize: [25, 15],
-                    className: "icon"
-                }),
-            };
+            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description });
+            marker.addTo(map);
 
-            var layer = L.geoJson(markers, {
-                pointToLayer: function (feature, latLng) {
-                    return L.marker(latLng, {
-                        title: feature.properties.title,
-                        icon: icons[feature.properties.description]
-                    });
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.title);
-                }
+            function onSuccess(position) {
+                marker.setLatLng([position.coordinates.latitude, position.coordinates.longitude]);
+            }
+
+            // errrors: permission_denied, position_unavailable, timeout
+            function onError(error) {
+                console.log("Position error: ", error.code, error.message);
+            }
+
+            window.watchId = navigator.geolocation.watchPosition(onSuccess, onError, {
+                maximumAge: 0, timeout: 60000, enableHighAccuracy: true
             });
 
-            layer.addTo(map);
         };
     </script>
 </head>

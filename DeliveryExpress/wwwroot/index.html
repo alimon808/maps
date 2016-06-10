@@ -42,7 +42,7 @@
         window.onload = function () {
             setupMap();
 
-            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description });
+            var layer = L.mapbox.featureLayer(markers).addTo(map);
             marker.addTo(map);
         };
     </script>

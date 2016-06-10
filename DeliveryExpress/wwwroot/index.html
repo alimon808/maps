@@ -19,6 +19,7 @@
         }
     </style>
     <script src="js/markers.js"></script>
+    <script src="js/paths.js"></script>
     <script>
 
         function setupMap() {
@@ -39,39 +40,53 @@
             map.setView([-41.2889, 174.7772], 12);
         }
 
-        window.onload = function () {
-            setupMap();
+        function showMarkers() {
+            var icons = {
+                "Truck": L.icon({
+                    iconUrl: "img/truck.png",
+                    iconSize: [30, 15],
+                    className: "icon"
+                }),
+                "Van": L.icon({
+                    iconUrl: "img/van.png",
+                    iconSize: [30, 15],
+                    className: "icon"
+                }),
+                "Scooter": L.icon({
+                    iconUrl: "img/scooter.png",
+                    iconSize: [25, 15],
+                    className: "icon"
+                })
+            };
 
-            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description });
-            marker.addTo(map);
-
-            function onSuccess(position) {
-                marker.setLatLng([position.coordinates.latitude, position.coordinates.longitude]);
-            }
-
-            // errrors: permission_denied, position_unavailable, timeout
-            function onError(error) {
-                console.log("Position error: ", error.code, error.message);
-            }
-
-            window.watchId = navigator.geolocation.watchPosition(onSuccess, onError, {
-                maximumAge: 0, timeout: 60000, enableHighAccuracy: true
+            var layer = L.geoJson(markers, {
+                pointToLayer: function (feature, latLng) {
+                    return L.marker(latLng, {
+                        title: feature.properties.title,
+                        icon: icons[feature.properties.description]
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.title);
+                }
             });
 
+            layer.addTo(map);
+        }
 
+        window.onload = function () {
+            setupMap();
+            showMarkers();
+
+            var latLngs = paths.features[0].geometry.coordinates;
+            latLngs.forEach(function (latLng) {
+                latLng.reverse();
+            });
+
+            L.polyline(latLngs, { color: "#ff8c00", weight: 3, opacity: 0.7 }).addTo(map);
 
         };
 
-        function stopPositions() {
-            navigator.geolocation.clearWatch(window.watchId);
-        }
-
-        function watchPositions() {
-            setInterval(function () {
-                navigator.geolocation.getCurrentPosition(onSuccess, onError,
-                    { maximumAge: 0, timeout: 60000, enableHighAccuracy: true }, 1000)
-            });
-        }
     </script>
 </head>
 <body>

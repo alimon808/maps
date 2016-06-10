@@ -42,7 +42,13 @@
         window.onload = function () {
             setupMap();
 
-            var layer = L.mapbox.featureLayer(markers).addTo(map);
+            var truckIcon = L.icon({
+                iconUrl: "img/truck.png",
+                iconSize: [30, 15],
+                className: "icon"
+            });
+
+            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description, icon: truckIcon });
             marker.addTo(map);
         };
     </script>

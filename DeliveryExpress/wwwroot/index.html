@@ -42,14 +42,37 @@
         window.onload = function () {
             setupMap();
 
-            var truckIcon = L.icon({
-                iconUrl: "img/truck.png",
-                iconSize: [30, 15],
-                className: "icon"
+            var icons = {
+                "Truck": L.icon({
+                    iconUrl: "img/truck.png",
+                    iconSize: [30, 15],
+                    className: "icon"
+                }),
+                "Van": L.icon({
+                    iconUrl: "img/van.png",
+                    iconSize: [30, 15],
+                    className: "icon"
+                }),
+                "Scooter": L.icon({
+                    iconUrl: "img/scooter.png",
+                    iconSize: [25, 15],
+                    className: "icon"
+                }),
+            };
+
+            var layer = L.geoJson(markers, {
+                pointToLayer: function (feature, latLng) {
+                    return L.marker(latLng, {
+                        title: feature.properties.title,
+                        icon: icons[feature.properties.description]
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.title);
+                }
             });
 
-            var marker = L.marker(markers.features[0].geometry.coordinates.reverse(), { title: markers.features[0].properties.description, icon: truckIcon });
-            marker.addTo(map);
+            layer.addTo(map);
         };
     </script>
 </head>

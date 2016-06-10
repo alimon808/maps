@@ -78,12 +78,8 @@
             setupMap();
             showMarkers();
 
-            var latLngs = paths.features[0].geometry.coordinates;
-            latLngs.forEach(function (latLng) {
-                latLng.reverse();
-            });
-
-            L.polyline(latLngs, { color: "#ff8c00", weight: 3, opacity: 0.7 }).addTo(map);
+            var layer = L.geoJson(paths, { color: "#ff8c00", weight: 3, opacity: 0.7 });
+            layer.addTo(map);
 
         };
 

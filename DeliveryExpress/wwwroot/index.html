@@ -58,7 +58,20 @@
                 maximumAge: 0, timeout: 60000, enableHighAccuracy: true
             });
 
+
+
         };
+
+        function stopPositions() {
+            navigator.geolocation.clearWatch(window.watchId);
+        }
+
+        function watchPositions() {
+            setInterval(function () {
+                navigator.geolocation.getCurrentPosition(onSuccess, onError,
+                    { maximumAge: 0, timeout: 60000, enableHighAccuracy: true }, 1000)
+            });
+        }
     </script>
 </head>
 <body>

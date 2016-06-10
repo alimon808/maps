@@ -21,6 +21,7 @@
     <script src="js/markers.js"></script>
     <script src="js/paths.js"></script>
     <script src="js/roadworks.js"></script>
+    <script src="js/suburbs.js"></script>
     <script>
 
         function setupMap() {
@@ -75,27 +76,36 @@
             layer.addTo(map);
         }
 
-        window.onload = function () {
-            setupMap();
-            showMarkers();
+        function showRoute() {
+            var latLngs = paths.features[0].geometry.coordinates;
+            latLngs.forEach(function (latLng) { latLng.reverse(); });  // reverse lat/lng order
 
-            var layer = L.geoJson(paths, { color: "#ff8c00", weight: 3, opacity: 0.7 });
-            layer.addTo(map);
+            L.polyline(latLngs, { color: "#FF8C00", weight: 3, opacity: 0.7 }).addTo(map);
+        }
 
+        function showRoadworks() {
             var latLngs = roadworks.features[0].geometry.coordinates;
-            latLngs[0].forEach(function (latLng) { latLng.reverse(); });
+            latLngs[0].forEach(function (latLng) { latLng.reverse(); });  // reverse lat/lng order
 
             var polygon = L.polygon(latLngs, {
                 fillColor: "#aa0000",
                 fillOpacity: 0.3,
                 color: "#aa0000"
             }).addTo(map);
+        }
 
+        window.onload = function () {
+            setupMap();
+            showMarkers();
+            showRoute();
+            showRoadworks();
 
-            polygon.bindPopup("Dates: <b>9 Sep - 13 Sep</b><br />Times: <b>07:00-13:00</b>");
-            polygon.openPopup();
-
-            map.fitBounds(polygon.getBounds());
+            var layer = L.geoJson(suburbs, {
+                color: "#c0c0c0", weight: 2, opacity: 0.7, fillOpacity: 0,
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.suburb);
+                }
+            }).addTo(map);
 
         };
 

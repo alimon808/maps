@@ -101,9 +101,17 @@
             showRoadworks();
 
             var layer = L.geoJson(suburbs, {
-                color: "#c0c0c0", weight: 2, opacity: 0.7, fillOpacity: 0,
+                color: "#c0c0c0",
+                weight: 2,
+                opacity: 0.7,
+                fillOpacity: 0,
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup(feature.properties.suburb);
+
+                    layer.on("dblclick", function (event) {
+                        map.fitBounds(event.target.getBounds());
+                        event.target.closePopup();
+                    });
                 }
             }).addTo(map);
 

@@ -17,11 +17,23 @@
             bottom: 0; 
             width: 100%;
         }
+
+        .timestamp {
+            width: auto !important;
+            height: auto !important;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 2px;
+            border: 1px solid #c0c0c0;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+        }
     </style>
     <script src="js/markers.js"></script>
     <script src="js/paths.js"></script>
     <script src="js/roadworks.js"></script>
     <script src="js/suburbs.js"></script>
+    <script src="js/timed_paths.js"></script>
     <script>
 
         function setupMap() {
@@ -100,20 +112,29 @@
             showRoute();
             showRoadworks();
 
-            var layer = L.geoJson(suburbs, {
-                color: "#c0c0c0",
-                weight: 2,
-                opacity: 0.7,
-                fillOpacity: 0,
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.suburb);
+            markers = [];
+            timedPaths.features.forEach(function (feature) {
+                var icon = L.divIcon({ html: feature.properties.timestamp.slice(10), className: "timestamp" });
+                markers.push(L.marker(feature.geometry.coordinates.reverse(), { icon: icon }));
+            });
 
-                    layer.on("dblclick", function (event) {
-                        map.fitBounds(event.target.getBounds());
-                        event.target.closePopup();
-                    });
+            var timestampLayer = L.featureGroup(markers);
+
+            if (map.getZoom() > minTimestampZoom) {
+                timestampLayer.addTo(map);
+            }
+
+            var minTimestampZoom = 15;
+
+            map.on("zoomend", function (event) {
+                if (map.getZoom() >= minTimestampZoom && !map.hasLayer(timestampLayer)) {
+                    map.addLayer(timestampLayer);
                 }
-            }).addTo(map);
+
+                if (map.getZoom() < minTimestampZoom && map.hasLayer(timestampLayer)) {
+                    map.removeLayer(timestampLayer);
+                }
+            });
 
         };
 

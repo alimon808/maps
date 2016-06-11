@@ -16,5 +16,10 @@
   - polygons
   - kml format
 - Adding interactivity
+  - events and event handling methods
+  - double click events
+  - zoom events
+  - custom marker to filter
+  - mouse events on markers
 - Going further
 

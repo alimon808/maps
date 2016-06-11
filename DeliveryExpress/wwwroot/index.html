@@ -15,7 +15,8 @@
             position: absolute; 
             top: 0; 
             bottom: 0; 
-            width: 100%;
+            width: 80%;
+            border-right: 1px solid #c0c0c0;
         }
 
         .timestamp {
@@ -38,6 +39,33 @@
             z-index: 100;
             padding: 5px;
             border-radius: 3px;
+        }
+
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 19%;
+            height: 100%;
+            font-family: Verdana, Arial, Arial, Helvetica, sans-serif, sans-serif;
+            font-size: 10px;
+            margin-left: 0;
+            padding-left: 5px;
+        }
+
+        #sidebar p {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        #sidebar strong {
+            display: inline-block;
+            width: 50%;
+        }
+
+        .icon {
+            -webkit-filter: drop-shadow(0px 0px 3px rgba(1,1,1,1));
         }
     </style>
     <script src="js/markers.js"></script>
@@ -63,6 +91,15 @@
             map.addControl(L.mapbox.infoControl({ position: "bottomleft" }));
             map.removeControl(map.attributionControl);
             map.setView([-41.2889, 174.7772], 12);
+        }
+
+        function showFleetStats() {
+            sidebar = document.getElementById("sidebar");
+            sidebar.innerHTML = "<h1>Fleet Stats</h1>" +
+                "<p><strong>Deliveries:</strong> 17</p>" +
+                "<p><strong>Vehicles out:</strong> 5</p>" +
+                "<p><strong>Pending deliveries:</strong> 52</p>" +
+                "<p><strong>Pending pickups:</strong> 63</p>";
         }
 
         function showMarkers(filterValues) {
@@ -92,7 +129,20 @@
                     });
                 },
                 onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.title);
+                    //layer.bindPopup(feature.properties.title);
+                    layer.on("mouseover", function (event) {
+                        sidebar = document.getElementById("sidebar");
+                        sidebar.innerHTML = "<h1>" + feature.properties.title + "</h1>" +
+                               "<p><strong>Deliveries:</strong>" + feature.properties.deliveries + "</p>" +
+                               "<p><strong>Pending deliveries:</strong>" + feature.properties.pendingDeliveries + "</p>" +
+                               "<p><strong>Pickups:</strong>" + feature.properties.pickups + "</p>" +
+                               "<p><strong>Pending pickups:</strong>" + feature.properties.pendingPickups + "</p>" +
+                               "<p><strong>Shift time :</strong>" + feature.properties.shiftTime + "</p>";
+                    });
+
+                    layer.on("mouseout", function (event) {
+                        showFleetStats();
+                    });
                 },
                 filter: function (feature) {
                     return filterValues[feature.properties.description];
@@ -152,6 +202,7 @@
             showRoute();
             showRoadworks();
             showSuburbs();
+            showFleetStats();
 
             var markerLayer = showMarkers(getFilterValues());
 
@@ -167,6 +218,7 @@
 </head>
 <body>
     <div id="map"></div>
+    <div id="sidebar"></div>
 <div id = "filters">
     <div>
         <input type = "checkbox" checked = "checked" class = "filter"

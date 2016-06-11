@@ -8,7 +8,12 @@ window.markers = {
             "description": "Van",
             "marker-symbol": "v",
             "marker-color": "#0000aa",
-            "marker-size": "large"
+            "marker-size": "large",
+            "deliveries": 3,
+            "pendingDeliveries": 15,
+            "pickups": 4,
+            "pendingPickups": 7,
+            "shiftTime": "07:00-16:00"
 
         },
         "geometry": {

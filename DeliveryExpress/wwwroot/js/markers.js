@@ -13,7 +13,8 @@ window.markers = {
             "pendingDeliveries": 15,
             "pickups": 4,
             "pendingPickups": 7,
-            "shiftTime": "07:00-16:00"
+            "shiftTime": "07:00-16:00",
+            "marker-symbol": "car"
 
         },
         "geometry": {
@@ -28,7 +29,8 @@ window.markers = {
         "type": "Feature",
         "properties": {
             "title": "Rick",
-            "description": "Truck"
+            "description": "Truck",
+            "marker-symbol": "bus"
         },
         "geometry": {
             "type": "Point",
@@ -42,7 +44,8 @@ window.markers = {
         "type": "Feature",
         "properties": {
             "title": "Tony",
-            "description": "Scooter"
+            "description": "Scooter",
+            "marker-symbol": "scooter"
         },
         "geometry": {
             "type": "Point",
@@ -56,7 +59,8 @@ window.markers = {
         "type": "Feature",
         "properties": {
             "title": "Al",
-            "description": "Van"
+            "description": "Van",
+            "marker-symbol": "car"
         },
         "geometry": {
             "type": "Point",
@@ -70,7 +74,8 @@ window.markers = {
         "type": "Feature",
         "properties": {
             "title": "Mike",
-            "description": "Truck"
+            "description": "Truck",
+            "marker-symbol": "bus"
         },
         "geometry": {
             "type": "Point",
